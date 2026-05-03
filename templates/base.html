@@ -10,8 +10,8 @@
     
     <!-- Custom CSS -->
     <style>
-        body { background-color: #f8f9fa; }
-        .navbar { margin-bottom: 20px; }
+        body { background-color: #f4f7f6; }
+        .main-container { margin-top: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     </style>
 
     {% block scripts %}
@@ -19,16 +19,16 @@
     
   </head>
   <body>
+  
     <!-- Navigation Bar -->
-
-    {% comment %} <nav class="navbar navbar-dark bg-dark">
+    <nav class="navbar navbar-dark bg-dark">
       <div class="container">
-        <a class="navbar-brand" href="#"> Real-Time Stats</a>
+        <a class="navbar-brand" href="/">Network Health Monitor</a>
       </div>
-    </nav> {% endcomment %}
+    </nav>
 
     <!-- The Content Block -->
-    <div class="container mt-3">
+    <div class="container main-container">
         {% block content %}
         <!-- Dashboard code appears here -->
         {% endblock content %}
