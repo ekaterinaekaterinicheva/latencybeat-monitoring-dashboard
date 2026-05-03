@@ -3,16 +3,24 @@ from .models import Statistic, DataItem
 
 def main(request):
     qs = Statistic.objects.all()
+
     if request.method == "POST":
         new_stat = request.POST.get("new-statistic")
-        obj, _ = Statistic.objects.get_or_create(name=new_stat)
-        return redirect("monitoring_dashboard:dashboard", obj.slug)
+
+        # Check: Create ONLY IF the user actually typed something
+        if new_stat and new_stat.strip():
+            obj, created = Statistic.objects.get_or_create(name=new_stat)
+            # Redirect to the dashboard of the newly created (or existing) device
+            return redirect("monitoring_dashboard:dashboard", slug=obj.slug)
+    
     return render(request, "monitoring_dashboard/main.html", {'qs': qs})
 
 def dashboard(request, slug):
+    # Fetch the device or return a 404 error if it doesn't exist
     obj = get_object_or_404(Statistic, slug=slug)
+
     return render(request, "monitoring_dashboard/dashboard.html", {
         'name': obj.name,
         'slug': obj.slug,
-        'data': obj.data
+        'data': obj.data # Calls the @property from the models.py
         })
