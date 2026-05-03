@@ -1,0 +1,43 @@
+services:
+  # The DB - PostgreSQL
+  db:
+    image: postgres:15
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+
+  # The Message Broker - Redis (Essential for Celery and Channels)
+  redis:
+    image: redis:alpine
+
+  # The Django App
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    environment:
+      - POSTGRES_NAME=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    depends_on:
+      - db
+      - redis
+
+  # The Celery Worker (For pinging servers)
+  worker:
+    build: .
+    command: celery -A core worker -l info
+    volumes:
+      - .:/code
+    depends_on:
+      - redis
+      - db
+
+volumes:
+  postgres_data:
