@@ -6,4 +6,4 @@ def main(request):
     return render(request, "monitoring_dashboard/main.html", {'qs': qs})
 
 def dashboard(request, slug):
-    return render(request, "monitoring_dashboard/dashboard.html", {})
+    return render(request, "monitoring_dashboard/dashboard.html", {'dashboard_slug': slug})

@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block scripts %}
+  <script>const dashboardSlug = '{{ dashboard_slug }}';</script>
   <script src="{% static 'stats/dashboard.js' %}" defer></script>
     
 {% endblock scripts %}

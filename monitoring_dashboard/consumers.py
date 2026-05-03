@@ -11,16 +11,19 @@ class DashboardConsumer(AsyncWebsocketConsumer):
         print(f"Connection closed with code: {code}")
 
     async def receive(self, text_data = None, bytes_data = None):
-        message = None
-        sender = None
-        if text_data:
-            text_data_json = json.loads(text_data)
-            message = text_data_json.get("message")
-            sender = text_data_json.get("sender")
+        message = "No message received" # Initialize default message
 
-        print(f"Received message from {sender}: {message}")
+        if text_data is not None:
+            text_data_json = json.loads(text_data) # Parse the incoming JSON
 
+            # Extract the message content
+
+            # Use .get() to avoid KeyErrors if "message" is missing
+            message = text_data_json.get("message", "Empty message")
+
+            print(f"Received from client: {text_data_json}")
+
+        # Send the response back to the WebSocket
         await self.send(text_data=json.dumps({
-            "message": message,
-            "sender": sender
+            "message": message
         }))

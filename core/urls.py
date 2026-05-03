@@ -22,5 +22,5 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("monitoring_dashboard.urls", namespace="monitoring_dashboard")),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("", include("monitoring_dashboard.urls")),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
