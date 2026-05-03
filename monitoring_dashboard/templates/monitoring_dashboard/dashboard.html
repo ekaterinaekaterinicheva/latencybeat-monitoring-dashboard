@@ -1,12 +1,15 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block scripts %}
+  <script src="{% static 'stats/dashboard.js' %}" defer></script>
+    
 {% endblock scripts %}
 
 {% block content %}
   <div class="row">
     <div class="col-md-12">
-      <h1>Dashboard: {{ dashboard_slug }}</h1>
+      <h1>Dashboard {{ dashboard_slug }}</h1>
       <p>Hello World!</p>
     </div>
   </div>
