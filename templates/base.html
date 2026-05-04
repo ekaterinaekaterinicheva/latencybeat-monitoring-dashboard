@@ -5,13 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Monitoring Dashboard</title>
     
-    <!-- Bootstrap CSS Link -->
+    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     
-    <!-- Custom CSS -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cobalt Sky Theme - Custom Styles -->
     <style>
-        body { background-color: #f4f7f6; }
-        .main-container { margin-top: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+      /* Color Variables for Cobalt Sky Pallette. Combination 53: Cobalt sky by Figma */
+      :root {
+        --cobalt-primary: #0047AB;      /* Bright Cobalt Blue */
+        --cobalt-dark: #000080;          /* Dark Navy Blue */
+        --cobalt-light: #82C8E5;         /* Light Sky Blue */
+        --cobalt-slate: #6D8196;         /* Muted Slate Blue */
+      }
+
+      /* Base Styling */
+      body {
+        background: linear-gradient(135deg, #f8fafb 0%, #e8f0f8 100%);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #1f2937;
+      }
+
+      /* Navigation Bar - Gradient Header */
+      .navbar-custom {
+        background: linear-gradient(90deg, var(--cobalt-dark) 0%, var(--cobalt-primary) 100%);
+        box-shadow: 0 4px 12px rgba(0, 0, 128, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .navbar-brand {
+        font-weight: 700;
+        font-size: 1.4rem;
+        letter-spacing: -0.5px;
+        color: white !important;
+        transition: all 0.3s ease;
+      }
+
+      .navbar-brand:hover {
+        transform: translateY(-2px);
+        text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Main Container Styling */
+      .main-container {
+        margin-top: 2rem;
+        padding: 2rem;
+        background: white;
+        border-radius: 16px;
+        box-shadow: 0 8px 32px rgba(0, 71, 171, 0.08);
+        border: 1px solid rgba(130, 200, 229, 0.1);
+      }
+
+      /* Primary Button Styling */
+      .btn-cobalt-primary {
+        background: linear-gradient(135deg, var(--cobalt-primary) 0%, #003a8a 100%);
+        border: none;
+        color: white;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 12px rgba(0, 71, 171, 0.3);
+      }
+
+      .btn-cobalt-primary:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 71, 171, 0.4);
+        color: white;
+      }
+
+      /* Card Styling */
+      .card-modern {
+        border: 1px solid rgba(130, 200, 229, 0.2);
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 4px 16px rgba(0, 71, 171, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .card-modern:hover {
+        box-shadow: 0 8px 24px rgba(0, 71, 171, 0.12);
+        border-color: rgba(130, 200, 229, 0.3);
+        transform: translateY(-2px);
+      }
+
+      /* Headings - Typography */
+      h1, h2, h3, h4, h5, h6 {
+        color: var(--cobalt-dark);
+        font-weight: 700;
+        letter-spacing: -0.5px;
+      }
+
+      /* Links */
+      a {
+        color: var(--cobalt-primary);
+        text-decoration: none;
+        transition: all 0.2s ease;
+      }
+
+      a:hover {
+        color: var(--cobalt-dark);
+        text-decoration: underline;
+      }
     </style>
 
     {% block scripts %}
@@ -20,19 +115,39 @@
   </head>
   <body>
   
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="/">Network Health Monitor</a>
+    <!-- Modern Navigation Bar with Gradient -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+      <div class="container-fluid">
+        <!-- Brand Logo -->
+        <a class="navbar-brand" href="/">📊 Network Monitor</a>
+        
+        <!-- Responsive Toggle Button -->
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <a class="nav-link active text-white" href="/">Home</a>
+            </li>
+          </ul>
+        </div>
       </div>
     </nav>
 
-    <!-- The Content Block -->
-    <div class="container main-container">
-        {% block content %}
-        <!-- Dashboard code appears here -->
-        {% endblock content %}
+    <!-- Main Content Container -->
+    <div class="container-fluid" style="max-width: 1400px; margin: 0 auto;">
+        <div class="main-container">
+            {% block content %}
+            <!-- Page content appears here -->
+            {% endblock content %}
+        </div>
     </div>
+
+    <!-- Bootstrap 5 JS Bundle (includes Popper) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
   </body>
 </html>

@@ -25,9 +25,17 @@ def dashboard(request, slug):
     # Reverse them so they are in chronological order (oldest to newest)
     historical_data = reversed(historical_data)
 
+    # Prepare data for JSON
+    initial_data = [
+        {
+            "value": item.value, 
+            "time": item.created_at.strftime('%H:%M:%S')
+        } for item in historical_data
+    ]
+
     return render(request, "monitoring_dashboard/dashboard.html", {
         'name': obj.name,
         'slug': obj.slug,
         'data': obj.data, # Calls the @property from the models.py
-        'historical_data': historical_data
+        'historical_data_json': list(initial_data)
     })

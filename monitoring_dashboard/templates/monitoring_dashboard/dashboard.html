@@ -2,42 +2,124 @@
 {% load static %}
 
 {% block scripts %}
-  <!-- Chart.js for visualization -->
+  <!-- Chart.js for real-time data visualization -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <!-- Pass Django variables to JS -->
+  
+  <!-- Pass Django variables to JavaScript -->
   <script>
     const dashboardSlug = "{{ slug }}";
   </script>
+  
+  <!-- Dashboard interaction and WebSocket handler -->
   <script src="{% static 'stats/dashboard.js' %}" defer></script>
 {% endblock scripts %}
 
 {% block content %}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="/">Home</a></li>
-    <li class="breadcrumb-item active">{{ name }}</li>
+<!-- Breadcrumb Navigation -->
+<nav aria-label="breadcrumb" class="mb-4">
+  <ol class="breadcrumb" style="background-color: rgba(130, 200, 229, 0.1); padding: 1rem; border-radius: 8px; margin-bottom: 0;">
+    <li class="breadcrumb-item">
+      <a href="/" style="color: var(--cobalt-primary); font-weight: 500;">Home</a>
+    </li>
+    <li class="breadcrumb-item active" style="color: var(--cobalt-dark); font-weight: 600;">{{ name }}</li>
   </ol>
 </nav>
 
-<div class="row">
-  <div class="col-md-4">
-    <div class="card p-3">
-        <h3 id="dashboard-name">{{ name }}</h3>
-        <p class="text-muted">ID: <span id="dashboard-slug">{{ slug }}</span></p>
-        <hr>
-        <div class="form-group">
-          <label class="form-label">Manual Health Input</label>
-          <input id="data-input" type="number" class="form-control" placeholder="Enter latency (ms)">
-          <button id="submit-btn" class="btn btn-primary mt-2 w-100">Send Update</button>
+<!-- Main Dashboard Grid Layout -->
+<div class="row g-4 mt-1">
+  
+  <!-- Left Sidebar - Device Info & Manual Input Panel -->
+  <div class="col-lg-3">
+    <!-- Device Information Card -->
+    <div class="card-modern p-4 mb-4">
+      <!-- Device Name Header -->
+      <div style="background: linear-gradient(135deg, var(--cobalt-primary) 0%, var(--cobalt-light) 100%); padding: 1rem; border-radius: 10px; margin: -1rem -1rem 1.5rem -1rem;">
+        <h2 id="dashboard-name" style="color: white; margin: 0; font-size: 1.6rem;">{{ name }}</h2>
+      </div>
+      
+      <!-- Device Metadata -->
+      <div class="mb-3">
+        <label style="color: var(--cobalt-slate); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; font-weight: 600;">Device ID</label>
+        <p id="dashboard-slug" style="color: var(--cobalt-dark); font-weight: 600; margin: 0;">{{ slug }}</p>
+      </div>
+      
+      <hr style="border-color: rgba(130, 200, 229, 0.2);">
+      
+      <!-- Manual Health Input Form -->
+      <div>
+        <label class="form-label fw-600" style="color: var(--cobalt-dark); font-weight: 600;">📥 Manual Health Input</label>
+        <p style="color: var(--cobalt-slate); font-size: 0.85rem; margin-bottom: 0.5rem;">Enter a latency value (ms)</p>
+        
+        <!-- Input Field with Custom Styling -->
+        <input 
+          id="data-input" 
+          type="number" 
+          class="form-control" 
+          placeholder="e.g., 45"
+          style="border: 2px solid rgba(0, 71, 171, 0.2); border-radius: 8px; padding: 0.6rem; transition: all 0.3s ease; font-weight: 500;"
+          onmouseover="this.style.borderColor='var(--cobalt-primary)'"
+          onmouseout="this.style.borderColor='rgba(0, 71, 171, 0.2)'"
+        >
+        
+        <!-- Submit Button -->
+        <button 
+          id="submit-btn" 
+          class="btn btn-cobalt-primary w-100 mt-3"
+          style="font-weight: 600; padding: 0.65rem; border-radius: 8px;"
+        >
+          Send Update
+        </button>
+      </div>
+    </div>
+    
+    <!-- Stats Card - Quick Info -->
+    <div class="card-modern p-3" style="background: linear-gradient(135deg, rgba(0, 71, 171, 0.05) 0%, rgba(130, 200, 229, 0.05) 100%);">
+      <p style="margin: 0; color: var(--cobalt-slate); font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.5px;">Last Update</p>
+      <p style="margin: 0.5rem 0 0 0; color: var(--cobalt-dark); font-weight: 700; font-size: 1.1rem;" id="last-update">--:--</p>
+    </div>
+  </div>
+  
+  <!-- Right Section - Chart Display -->
+  <div class="col-lg-9">
+    <!-- Real-Time Chart Card -->
+    <div class="card-modern p-4">
+      <!-- Chart Header -->
+      <div class="d-flex align-items-center justify-content-between mb-4">
+        <div>
+          <h3 style="margin: 0; font-size: 1.4rem;">Real-Time Monitor</h3>
+          <p style="margin: 0.25rem 0 0 0; color: var(--cobalt-slate); font-size: 0.9rem;">Latency Over Time (ms)</p>
         </div>
-    </div>
-  </div>
-
-<div class="col-md-8">
-    <div class="card p-3">
-        <h5>Latency Over Time (ms)</h5>
+        <!-- Live Indicator Badge -->
+        <span style="display: inline-block; background: #10b981; color: white; padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;">
+          🔴 Live
+        </span>
+      </div>
+      
+      <!-- Historical Data JSON (used by dashboard.js) -->
+      {{ historical_data_json|json_script:"initial_data" }}
+      
+      <!-- Chart Canvas - Where Chart.js renders the graph -->
+      <div style="position: relative; height: 400px; margin: 0 -1rem -1rem -1rem;">
         <canvas id="dashboard-chart"></canvas>
+      </div>
     </div>
   </div>
+  
 </div>
+
+<!-- Custom Chart.js Styling -->
+<style>
+  /* Chart canvas border styling */
+  #dashboard-chart {
+    border-radius: 0 0 12px 12px;
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 992px) {
+    .col-lg-3, .col-lg-9 {
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>
+
 {% endblock content %}

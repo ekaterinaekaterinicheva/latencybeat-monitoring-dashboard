@@ -1,12 +1,15 @@
+// Initial Load (Runs once when the page opens)
+const historicalData = JSON.parse(document.getElementById('initial_data').textContent)
+
 // Initialize the Chart
 const ctx = document.getElementById('dashboard-chart').getContext('2d');
 const chart = new Chart(ctx, {
     type: 'line',
     data: {
-        labels: [], // Timestamps or indices go here
+        labels: historicalData.map(item => item.time), // Timestamps or indices go here
         datasets: [{
             label: 'Device Latency (ms)',
-            data: [], // Real-time values go here
+            data: historicalData.map(item => item.value), // Real-time values go here
             borderColor: 'rgba(75, 192, 192, 1)',
             backgroundColor: 'rgba(75, 192, 192, 0.2)',
             borderWidth: 2,
