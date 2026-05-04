@@ -46,5 +46,18 @@ services:
       - redis
       - db
 
+  # The Clock - Tells Celery when to run the heartbeat
+  beat:
+    build: .
+    command: celery -A core beat -l info
+    volumes:
+      - .:/code
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis:6379/0
+    depends_on:
+      - redis
+      - db
+
 volumes:
   postgres_data:

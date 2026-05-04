@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 import dj_database_url
 from pathlib import Path
+from celery.schedules import schedule
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -136,3 +138,11 @@ STATIC_URL = "static/"
 # Celery Configuration
 CELERY_BROKER_URL = os.environ.get("REDIS_URL", "redis://redis:6379/0")
 CELERY_RESULT_BACKEND = os.environ.get("REDIS_URL", "redis://redis:6379/0")
+
+# Celery Beat Schedule - runs the heartbeat task every 5 seconds
+CELERY_BEAT_SCHEDULE = {
+    'heartbeat-every-5-seconds': {
+        'task': 'monitoring_dashboard.tasks.heartbeat',
+        'schedule': timedelta(seconds=5),
+    },
+}
