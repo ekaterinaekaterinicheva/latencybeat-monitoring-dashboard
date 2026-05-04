@@ -1,26 +1,137 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>Add New Device</h3>
-<form method="POST" class="mb-4">
-  {% csrf_token %}
-  <div class="form-group">
-    <input type="text" name="new-statistic" class="form-control" placeholder="Enter Device Name (e.g. Web Server 1)">
-    <button type="submit" class="btn btn-success">Add to Monitor</button>
-  </div>
-</form>
-
-<h3>Monitored Devices</h3>
-{% if qs %}
-<div class="list-group">
-  {% for el in qs %}
-    <a href="{{ el.get_absolute_url }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-      {{ el.name }}
-      <span class="badge bg-primary rounded-pill">View Details</span>
-    </a>
-  {% endfor %}
+<!-- Page Header Section -->
+<div class="mb-5">
+  <h1 style="color: var(--cobalt-dark); font-size: 2rem; margin-bottom: 0.5rem;">📊 Network Health Dashboard</h1>
+  <p style="color: var(--cobalt-slate); font-size: 1rem; margin: 0;">Manage and monitor all your devices in one place</p>
 </div>
-{% else %}
-  <p class="text-muted">No devices added yet.</p>
-{% endif %}
+
+<!-- Add New Device Section -->
+<div class="row mb-5">
+  <div class="col-lg-6">
+    <div class="card-modern p-4">
+      <!-- Section Title -->
+      <h3 style="color: var(--cobalt-dark); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem;">
+        ➕ Add New Device
+      </h3>
+      
+      <!-- Add Device Form -->
+      <form method="POST" class="d-flex gap-2">
+        {% csrf_token %}
+        
+        <!-- Device Name Input -->
+        <input 
+          type="text" 
+          name="new-statistic" 
+          class="form-control flex-grow-1" 
+          placeholder="e.g., Web Server 1, Database, API Gateway"
+          style="border: 2px solid rgba(0, 71, 171, 0.2); border-radius: 8px; padding: 0.6rem; font-weight: 500; transition: all 0.3s ease;"
+          onmouseover="this.style.borderColor='var(--cobalt-primary)'"
+          onmouseout="this.style.borderColor='rgba(0, 71, 171, 0.2)'"
+          required
+        >
+        
+        <!-- Submit Button -->
+        <button 
+          type="submit" 
+          class="btn btn-cobalt-primary" 
+          style="font-weight: 600; padding: 0.6rem 1.5rem; border-radius: 8px; white-space: nowrap;"
+        >
+          Add Device
+        </button>
+      </form>
+      
+      <!-- Helper Text -->
+      <p style="margin: 0.75rem 0 0 0; color: var(--cobalt-slate); font-size: 0.85rem;">
+        💡 Give your device a descriptive name for easy identification
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- Monitored Devices Section -->
+<div>
+  <!-- Section Header -->
+  <h2 style="color: var(--cobalt-dark); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.5rem; font-size: 1.5rem;">
+    🖥️ Monitored Devices
+  </h2>
+  
+  {% if qs %}
+    <!-- Device Grid Layout -->
+    <div class="row g-3">
+      {% for el in qs %}
+        <!-- Individual Device Card -->
+        <div class="col-md-6 col-lg-4">
+          <a href="{{ el.get_absolute_url }}" style="text-decoration: none;">
+            <div class="card-modern p-4 h-100" style="display: flex; flex-direction: column; justify-content: space-between;">
+              
+              <!-- Device Information -->
+              <div>
+                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+                  <!-- Device Icon Badge -->
+                  <div style="width: 40px; height: 40px; background: linear-gradient(135deg, var(--cobalt-primary) 0%, var(--cobalt-light) 100%); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.2rem;">
+                    🖥️
+                  </div>
+                  <!-- Device Name -->
+                  <h4 style="margin: 0; color: var(--cobalt-dark); font-weight: 700; font-size: 1.1rem;">{{ el.name }}</h4>
+                </div>
+                
+                <!-- Device Metadata -->
+                <p style="margin: 0.5rem 0; color: var(--cobalt-slate); font-size: 0.9rem;">
+                  <strong>ID:</strong> {{ el.slug }}
+                </p>
+                
+                <!-- Status Indicator -->
+                <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid rgba(130, 200, 229, 0.2);">
+                  <span style="display: inline-block; background: rgba(16, 185, 129, 0.1); color: #059669; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 600;">
+                    ✓ Active
+                  </span>
+                </div>
+              </div>
+              
+              <!-- Call-to-Action Button -->
+              <div style="margin-top: 1rem;">
+                <div style="background: linear-gradient(135deg, rgba(0, 71, 171, 0.1) 0%, rgba(130, 200, 229, 0.1) 100%); padding: 0.75rem; border-radius: 8px; text-align: center; font-weight: 600; color: var(--cobalt-primary); transition: all 0.3s ease;">
+                  👁️ View Details →
+                </div>
+              </div>
+              
+            </div>
+          </a>
+        </div>
+      {% endfor %}
+    </div>
+  
+  {% else %}
+    <!-- Empty State Message -->
+    <div class="card-modern p-5" style="text-align: center; background: linear-gradient(135deg, rgba(0, 71, 171, 0.05) 0%, rgba(130, 200, 229, 0.05) 100%);">
+      <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
+      <h4 style="color: var(--cobalt-dark); margin-bottom: 0.5rem;">No Devices Yet</h4>
+      <p style="color: var(--cobalt-slate); margin: 0; font-size: 0.95rem;">
+        Add your first device above to start monitoring!
+      </p>
+    </div>
+  {% endif %}
+</div>
+
+<!-- Additional Custom Styling for Interactions -->
+<style>
+  /* Smooth transitions for all interactive elements */
+  .card-modern a {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  /* Responsive grid adjustments */
+  @media (max-width: 768px) {
+    h1 {
+      font-size: 1.5rem !important;
+    }
+    
+    .col-lg-4 {
+      min-width: 100%;
+    }
+  }
+</style>
+
 {% endblock content %}
