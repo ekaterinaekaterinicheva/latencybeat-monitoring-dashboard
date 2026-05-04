@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   # The DB - PostgreSQL
   db:
@@ -5,11 +7,11 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     environment:
-      - POSTGRES_DB=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 
-  # The Message Broker - Redis (Essential for Celery and Channels)
+  # The Message Broker - Redis
   redis:
     image: redis:alpine
 
@@ -22,19 +24,24 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - POSTGRES_NAME=postgres
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis:6379/0
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
       - db
       - redis
 
-  # The Celery Worker (For pinging servers)
+  # The Background Worker - Celery
   worker:
     build: .
     command: celery -A core worker -l info
     volumes:
       - .:/code
+    environment:
+      - DATABASE_URL=${DATABASE_URL}
+      - REDIS_URL=redis://redis:6379/0
     depends_on:
       - redis
       - db
