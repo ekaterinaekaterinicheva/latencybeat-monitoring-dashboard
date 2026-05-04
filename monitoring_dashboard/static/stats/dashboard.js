@@ -41,8 +41,8 @@ socket.onmessage = function (e) {
 
     // Keep only the last 15 points so that the chart doesn't get too messy
     if (chart.data.labels.length > 15) {
-        chart.data.labels.shift();
-        chart.data.datasets[0].data.shift();
+        chart.data.labels.shift(); // Remove oldest label
+        chart.data.datasets[0].data.shift(); // Remove oldest data point
     }
 
     // Update the chart
