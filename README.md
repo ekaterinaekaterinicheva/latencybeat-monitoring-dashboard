@@ -12,6 +12,9 @@ LatencyBeat was built to demonstrate a **production-grade data pipeline**, ensur
 - **Data Persistence**: PostgreSQL handles history storage with time series indexing for greater visualization.
 - **Orchestration**: The entire environment is containerized using Docker and Docker Compose.
 
+### Architecture Diagram
+<img width="687" height="166" alt="Architecture_LatencyBeat" src="https://github.com/user-attachments/assets/026f4336-19ab-4ef2-b544-982423551f79" />
+
 ## Key Features
 - **Real-time data streaming** using live Chart.js visualization.
 - **On-load history data priming** ensures charts are populated with the last 20 data points (latency ms) immediately upon page entry.
