@@ -4,6 +4,8 @@ LatencyBeat is a **containerized** full-stack application designed to **monitor 
 
 ![Build Status](https://github.com/ekaterinaekaterinicheva/latencybeat-monitoring-dashboard/actions/workflows/tests.yml/badge.svg)
 
+[Video Walkthrough](https://drive.google.com/file/d/1S8qWdZA3ep5gwKJ1R-iILWSqzwek9_Mw/view?usp=sharing)
+
 ## Architecture & Pipeline
 LatencyBeat was built to demonstrate a **production-grade data pipeline**, ensuring the main web thread remains non-blocking while handling continuous data streams.
 
