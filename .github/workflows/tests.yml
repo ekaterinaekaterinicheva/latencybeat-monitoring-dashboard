@@ -1,0 +1,44 @@
+name: LatencyBeat CI Logic
+
+# Run the check every time the code is pushed or a pull request is opened
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  # Check code quality - linting
+  linting:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install Linting Tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Run Flake8 (The "Ugly Code" Scanner)
+        # Catch major issues while scanning the app folders
+        run: |
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+  # The Container build check - Docker
+  docker-build:
+    needs: linting # Only run this if the code isn't "ugly"
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Test Docker Build
+        # This simulates what happens when docker compose up is run
+        run: docker compose build
