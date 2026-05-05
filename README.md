@@ -1,6 +1,8 @@
 # LatencyBeat: Real-Time Latency Monitoring App
 
-LatencyBeat is a **containerized full-stack application** designed to monitor network latency in real-time. Due to a distributed architecture, the system provides **instant data visualization** through **WebSockets**, leveraging a robust asynchronous pipeline.
+LatencyBeat is a **containerized** full-stack application designed to **monitor network latency in real-time**. Due to a distributed architecture, the system provides **instant data visualization** through **WebSockets**, leveraging a robust asynchronous pipeline.
+
+![Build Status](https://github.com/ekaterinaekaterinicheva/latencybeat-monitoring-dashboard/actions/workflows/tests.yml/badge.svg)
 
 ## Architecture & Pipeline
 LatencyBeat was built to demonstrate a **production-grade data pipeline**, ensuring the main web thread remains non-blocking while handling continuous data streams.
