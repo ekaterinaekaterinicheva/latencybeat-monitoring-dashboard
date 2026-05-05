@@ -34,6 +34,15 @@ LatencyBeat was built to demonstrate a **production-grade data pipeline**, ensur
 - **Task Queue:** Celery, Redis
 - **DevOps:** Docker, Docker Compose
 
+## LatencyBeat App Screenshots
+- Main page
+  
+  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/e7c8c483-a9fd-44f4-a1d5-fccc230f8c86" />
+  
+- Monitoring dashboard (for a specific device) page
+  
+  <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/95c0d093-52b4-46ae-a9d8-c786ce372fdb" />
+
 ## Installation & Local Development
 This project is fully containerized. To run the app, ensure you have Docker Desktop installed:
 
